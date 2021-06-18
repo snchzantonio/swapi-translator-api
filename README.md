@@ -77,8 +77,7 @@ Los endpoint son el equivalente a los endpoints de la API de SWAPI:
 Se puede buscar por el index: `/especies`  
 Buscar un recurso en particular: `/especies/6`  
 O hacer busquedas por el nombre: `/especies/?buscar=tat`  
-Para paginar usa el parametro `pagina`  
-O hacer busquedas por el nombre: `/especies/?buscar=tat&pagina=2`  
+Para paginar usa el parametro `pagina`: `/especies/?buscar=tat&pagina=2`  
 
 ## Respuesta de la API
 
@@ -112,6 +111,8 @@ La respuesta, si todo sale bien, sera:
   }
 }
 ```
+
+Si para algun endpoint la API devuelve `{ok:true, error: false, data:{}}`, por ejemplo `naves/1` seguramente es porque no hay data para ese recurso, puedes validar revisando `naves/` y te daras cuenta que faltanvarios recursos (`naves/1`, `naves/2`, `naves/3`, ...).
 
 
 ---
