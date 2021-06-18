@@ -17,6 +17,8 @@ functions:
   translatorswapi:
     handler: index.handler
     description: Recibe el nombre de un recurso de la api de SWAPI y devuelve su contenido traduciendo sus propiedades al español
+    layers:
+      - { Ref: NodejsLambdaLayer }
     events:
       - http: 
           path: vehiculos
@@ -74,3 +76,9 @@ functions:
           path: vehiculos/{idVehiculo}
           method: get
           cors: true
+layers:
+  nodejs:
+    package:
+      artifact: nodejs.zip
+      patterns:
+        - 'nodejs.zip'
