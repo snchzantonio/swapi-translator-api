@@ -2,6 +2,7 @@
 
 Este es un pequeño demo que muestra como traducir los `resources` de la api de starwars `https://swapi.py4e.com/` y hacer un despliegue en AWS lambda usando serverless framework.
 
+_**POR TEMAS DE TIEMPO NO PUDE TERMINAR AL ÚLTIMA PARTE DEL DEMO QUE ERA INTEGRAR CON UNA BASE DE DATOS, YA DI EL PREAVISO EN LA EMPRESA DONDE TRABAJO Y TENGO MUCHAS COSAS QUE PONER EN ORDEN PARA IRME TRANQUILO.**_
 
 ## Despliegue en AWS LAMBDA con serverless framework
 
@@ -9,7 +10,7 @@ _Antes de hacer el deploy puedes revisar el archivo `serverless.yml` para hacer 
 
 - En la carpeta del proyecto ejecuta el comando `serverless deploy`. Debes tener instalado el CLI del serverless framework y las credenciales del AWS.
 
-Si todo funciona correctamente veras en la consola algo como esto:  
+Si todo funciona correctamente verás en la consola algo como esto:  
 
 ```sh
 Serverless: Running "serverless" installed locally (in service node_modules)
@@ -63,7 +64,7 @@ EN la carpeta del proyecto ejecuta `serverless remove`
 
 Cuando hagas el deploy puedes usar cualquiera de los endpoints para consumir la API, no tiene CORS asi que se puede probar desde el navegador.
 
-Los endpoint son el equivalente a los endpoints de la API de SWAPI:  
+Los endpoint son el equivalente a los endpoints de la API de SWAPI (mas o menos, me meto la libertad de cambiar la traducción de algunos):  
 
 ```
 /peliculas  --->  /films  
@@ -76,17 +77,17 @@ Los endpoint son el equivalente a los endpoints de la API de SWAPI:
 
 Se puede buscar por el index: `/especies`  
 Buscar un recurso en particular: `/especies/6`  
-O hacer busquedas por el nombre: `/especies/?buscar=tat`  
+O hacer búsquedas por el nombre: `/especies/?buscar=tat`  
 Para paginar usa el parametro `pagina`: `/especies/?buscar=tat&pagina=2`  
 
 ## Respuesta de la API
 
 La API responde dentro de un wrapper `{ok, error, data}`  
 
-Suponiendo que la URL del proyecto es `https://spo4ff1asc.execute-api.us-east-2.amazonaws.com/dev`, se puede buscar un planeta asi:  
+Suponiendo que la URL del proyecto es `https://spo4ff1asc.execute-api.us-east-2.amazonaws.com/dev`, se puede buscar un planeta así:  
 `https://spo4ff1asc.execute-api.us-east-2.amazonaws.com/dev/planetas/4`  
 
-La respuesta, si todo sale bien, sera:  
+La respuesta, si todo sale bien, será:  
 ```json
 {
   "ok": true,
@@ -112,7 +113,7 @@ La respuesta, si todo sale bien, sera:
 }
 ```
 
-Si para algun endpoint la API devuelve `{ok:true, error: false, data:{}}`, por ejemplo `naves/1` seguramente es porque no hay data para ese recurso, puedes validar revisando `naves/` y te daras cuenta que faltanvarios recursos (`naves/1`, `naves/2`, `naves/3`, ...).
+Si para algún endpoint la API devuelve `{ok:true, error: false, data:{}}`, por ejemplo `naves/1`, seguramente es porque no hay data para ese recurso, puedes validar revisando `naves/` y te darás cuenta que faltan varios recursos (`naves/1`, `naves/2`, `naves/3`, ...).
 
 
 ---
@@ -138,9 +139,10 @@ const translate_swapi = require('translate_swapi');
 ## Corriendo las pruebas
 
 El demo tambien tiene algunas cuantas pruebs unitarias, puedes verlas con `npm run test`
-Deberias generar algo mas o menos asi:
+Debería generar algo más o menos así:
 
 ```sh
+npm run test
 > jest
 
  PASS  __test__/translator_index.spec.js
@@ -177,7 +179,7 @@ El proyecto se compone de varias partes:
 
 #### `/translator`
 
-Una pequeña libreria que tiene los metodos para traducir los distintos tipos de datos que se usan en el demo  
+Una pequeña librería que tiene los metodos para traducir los distintos tipos de datos que se usan en el demo  
 ```js
 const translator = require("./translator");
 
@@ -237,7 +239,7 @@ Retorna
 ```json
 "{\"ok\":true,\"error\":false,\"data\":{\"nombre\":\"Hoth\",\"periodo_de_rotacion\":\"23\",\"periodo_orbital\":\"549\",\"diametro\":\"7200\",\"clima\":\"frozen\",\"gravedad\":\"1.1 standard\",\"terreno\":\"tundra, ice caves, mountain ranges\",\"agua_en_la_superficie\":\"100\",\"poblacion\":\"unknown\",\"residentes\":[],\"peliculas\":[\"https://swapi.py4e.com/api/films/2/\"],\"creado\":\"2014-12-10T11:39:13.934000Z\",\"editado\":\"2014-12-20T20:58:18.423000Z\",\"url\":\"https://swapi.py4e.com/api/planets/4/\"}}"
 ```
-Fijate que `translatePayloadRE` recibe su segundo argumento como una cadena y devuelve una cadena, `translatePayloadRE` no se usa en el codigo, pero se deja como muestra de otro metodo para traducir los nombres de las propiedades (aunque este metodo no diferencia propiedades de valores y traducira todo lo que encuentre), internamente genera una expresion regular a diferencia de `translatePayload` que opera sobre objectos y traduce recursivamente en caso de ser necesario (como cuando se hacen busquedas con `?buscar=TEXTO`).  
+Fíjate que `translatePayloadRE` recibe su segundo argumento como una cadena y devuelve una cadena, `translatePayloadRE` no se usa en el codigo, pero se deja como muestra de otro metodo para traducir los nombres de las propiedades (aunque este metodo no diferencia propiedades de valores y traducirá todo lo que encuentre), internamente genera una expresion regular a diferencia de `translatePayload` que opera sobre objectos y traduce recursivamente en caso de ser necesario (como cuando se hacen busquedas con `?buscar=TEXTO`).  
 
 
 ```js
@@ -250,12 +252,12 @@ translator.translateWord("en", "search"); // retorna "buscar"
 translator.translatePath("en","especies", {buscar:"klo"}); // retorna "species/?search=klo"
 ```
 
-Los archivos de configuracion de este modulo son:
+Los archivos de configuración de este modulo son:
 
 - `en_props_translations.json` tiene las traducciones de español a ingles que se usan en el demo.  
 - `es_props_translations.json`  tiene las traducciones de ingles a español que se usan en el demo.
 
-Cada uno de estos archivos contiene un objecto con las claves como las palabras que se va a traducir y el valor como la traduccion.  
+Cada uno de estos archivos contiene un objecto con las claves como las palabras que se va a traducir y el valor como la traducción.  
 
 `en_props_translations.json`(para traducir del español al ingles)    
 ```json
@@ -271,14 +273,14 @@ Cada uno de estos archivos contiene un objecto con las claves como las palabras 
 }
 ```
 
-Es un modulo muy simple que hice solo para este demo y esta pensado para traducir las diferentes partes de los recursos. 
+Es un módulo muy simple que hice solo para este demo y esta pensado para traducir las diferentes partes de los recursos. 
 
-Como dato de color, `./translator` se comporta como un `noOP` cuando no tiene la traduccion de una palabra (es decir que devuelve lo que recibe como si no hiciera nada). Esto permite escribir codigo que no debe manejar casos especiales para palabras que no se encentran porque no se considera un error no tener la traduccion.  
+Como dato de color, `./translator` se comporta como un `noOP` cuando no tiene la traduccion de una palabra (es decir que devuelve lo que recibe como si no hiciera nada). Esto permite escribir codigo que no debe manejar casos especiales para palabras que no se encentran porque no se considera un error no tener la traducción.  
 
 #### `swapi.js` 
 
 Un wrapper alrededor de got para hacer las consultas a la api de SWAPI.  
-Tiene un solo metodo: `get` que recibe el path del recurso que quieres y un segundo parametro opcional que debe ser un objeto donde estas el query luego intenta obtener la data desde la API  y resuelve o rechaza una promesa.  
+Tiene un solo metodo: `get` que recibe el path del recurso que quieres y un segundo parametro opcional que debe ser un objeto donde esta el query luego intenta obtener la data desde la API y resuelve o rechaza una promesa.  
 ```js
 const swapi = require('./swapi');
 
@@ -326,14 +328,14 @@ Retorna
 ```
 
 Fijate que el resultado de la busqueda esta envuelto en `{ok, error, data}`  
-Esto permite saber rapidametne si hubo un error(`ok == false`), si todo salio bien, pero no hay data (`ok == true data: {}`) y cosas por el estilo.  
+Esto permite saber rapidametne si hubo un error(`ok == false`), si todo salió bien, pero no hay data (`ok == true data: {}`) y cosas por el estilo.  
 
 
 ### `translate_swapi.js`
 
-Aqui es donde realmente sucede todo, `translate_swapi.js` se apoya de `./translator` y `./swapi.js` para realizar el trabajo del demo.
+Aquí es donde realmente sucede todo, `translate_swapi.js` se apoya de `./translator` y `./swapi.js` para realizar el trabajo del demo.
 
-Este archivo reune la logica de negocio de alto nivel y comunica al lambda handler (`index.js`) con los otros 2 modulos.
+Este archivo reune la logica de negocio de alto nivel y comunica al lambda handler (`index.js`) con los otros 2 módulos.
 
 Se encarga de:
 - Obtener la  PATH en español
@@ -342,12 +344,12 @@ Se encarga de:
 - Pasarle la info obtenida en el punto anterior a `./translator` para que traduzca las propiedades del ingles al español
 - Devolver la info traducida
 
-`translate_swapi.js` es quien realmente hace la magia y no `./index.js`, fijate que en ningun momento se valida el endpoint, de hecho internamente no hay ningun endpoint de la API de SWAPI definido, porque se considera al endpoint como una abstraccion y simplemente se traducen las palabras que estan en el PATH para luego pasarselo a `swapi` para que intente buscar en la API. Esto significa que internamente no se necesitan definir las rutas de los recursos de la API (`/especies`, `/personajes`, ...) con una sola ruta como `/{proxy+}` seria suficiente, pero se hace solo como una tarea academica (la demo pedia al menos 2 endpoint) y que ver los nombres de las rutas ayuda a recordar cuales son los recursos que se pueden buscar. 
+`translate_swapi.js` es quien realmente hace la magia y no `./index.js`, fijate que en ningún momento se valida el endpoint, de hecho internamente no hay ningun endpoint de la API de SWAPI definido, porque se considera al endpoint como una abstracción y simplemente se traducen las palabras que estan en el PATH para luego pasarselo a `swapi` para que intente buscar en la API. Esto significa que no se necesitan definir las rutas de los recursos de la API (`/especies`, `/personajes`, ...) con una sola ruta como `/{proxy+}` sería suficiente, pero se hace solo como una tarea ilustrativa (la demo pedía al menos 2 endpoint) y que ver los nombres de las rutas ayuda a recordar cuales son los recursos que se pueden buscar. 
 
 ### `index.js`
 
-Este archivo es simplemente el entrypoint de la funcion AWS LAMBDA, sus funciones son pasar el path y el query a `translate_swapi` y devovler el resultado a quien invoca la funcion.  
+Este archivo es simplemente el entrypoint de la función AWS LAMBDA, sus funciones son pasar el path y el query a `translate_swapi` y devolver el resultado a quien invoca la función.  
 
 ### `nodejs.zip`
 
-Aqui estan las dependencias del proyecto (solo estan GOT y sus respectivas dependencia), se usa para crear el AWS LAYER de la funcion LAMBDA.
+Aqui están las dependencias del proyecto (solo estan GOT y sus respectivas dependencias), se usa para crear el AWS LAYER de la función LAMBDA.
