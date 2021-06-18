@@ -7,8 +7,7 @@ exports.handler = async (event) => {
  * Asi separamos el entorno de la logica y translate_swapi no depende de ningun entorno en particular, esto hace mas facil hacer pruebas por separado 
  * de la logica de negocio (mockery o unitarias) o migrar a otro entorno.
  */
-    //console.log(event);
-
+ 
     let response = {
         statusCode: 200,
         body: '',
@@ -16,7 +15,7 @@ exports.handler = async (event) => {
 
     try {
 
-        // - Traducir la URL
+        // - Conseguir el path y el query
         const path = event.path;
         const queryStringParameters = event.queryStringParameters;
 
