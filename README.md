@@ -83,8 +83,8 @@ Para paginar usa el parametro `pagina`: `/especies/?buscar=tat&pagina=2`
 
 La API responde dentro de un wrapper `{ok, error, data}`  
 
-Suponiendo que la URL del proyecto es `https://spo4ff1asc.execute-api.us-east-2.amazonaws.com/default`, se puede buscar un planeta asi:  
-`https://spo4ff1asc.execute-api.us-east-2.amazonaws.com/default/default/planetas/4`  
+Suponiendo que la URL del proyecto es `https://spo4ff1asc.execute-api.us-east-2.amazonaws.com/dev`, se puede buscar un planeta asi:  
+`https://spo4ff1asc.execute-api.us-east-2.amazonaws.com/dev/planetas/4`  
 
 La respuesta, si todo sale bien, sera:  
 ```json
