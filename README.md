@@ -59,7 +59,7 @@ layers:
 
 EN la carpeta del proyecto ejecuta `serverless remove`  
 
-## Probando la API
+## Probando la API AWS Lambda
 
 Cuando hagas el deploy puedes usar cualquiera de los endpoints para consumir la API, no tiene CORS asi que se puede probar desde el navegador.
 
@@ -111,6 +111,27 @@ La respuesta, si todo sale bien, sera:
     "url": "https://swapi.py4e.com/api/planets/4/"
   }
 }
+```
+
+
+---
+
+# Probar en local
+
+Puedes hacer `npm i` para instalar got localmente y hacer pruebas, como el demo esta desacoplado de AWS LAMBDA (no esta amarrado a esta infraestructura), puede probar haciendo `require('translate_swapi')` y pasandole 2 argumentos: El PATH del recurso y un objeto con los parametros del query.
+
+```js
+const translate_swapi = require('translate_swapi');
+
+(async ()=>{
+  try{
+    const result = await translate_swapi('personajes', {buscar: "Luck"});
+    console.log(result);
+  }catch(error){
+    console.log(error);
+  }
+}());
+
 ```
 
 ---
@@ -296,23 +317,3 @@ Este archivo es simplemente el entrypoint de la funcion AWS LAMBDA, sus funcione
 ### `nodejs.zip`
 
 Aqui estan las dependencias del proyecto (solo esta GOT y sus respectivas dependencia), se usa para crear el AWS LAYER de la funcion LAMBDA.
-
----
-
-# Probar en local
-
-Puedes hacer `npm i` para instalar got localmente y hacer pruebas, como el demo esta desacoplado de AWS LAMBDA (no esta amarrado a esta infraestructura), puede probar haciendo `require('translate_swapi')` y pasandole 2 argumentos: El PATH del recurso y un objeto con los parametros del query.
-
-```js
-const translate_swapi = require('translate_swapi');
-
-(async ()=>{
-  try{
-    const result = await translate_swapi('personajes', {buscar: "Luck"});
-    console.log(result);
-  }catch(error){
-    console.log(error);
-  }
-}());
-
-```
