@@ -24,7 +24,7 @@ module.exports = async (path, queryStringParameters) => {
         // - Traducir la info
         const translatedPayload = translator.translatePayload("es", swapiPayload.data);
 
-        // - Preparaar para devolver la info
+        // - Preparar para devolver la info
         response.data = translatedPayload;
 
     } catch (error) {
