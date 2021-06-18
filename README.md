@@ -135,6 +135,39 @@ const translate_swapi = require('translate_swapi');
 
 ```
 
+## Corriendo las pruebas
+
+El demo tambien tiene algunas cuantas pruebs unitarias, puedes verlas con `npm run test`
+Deberias generar algo mas o menos asi:
+
+```sh
+> jest
+
+ PASS  __test__/translator_index.spec.js
+  traduce palabras del español al ingles
+    √ buscar -> search (5 ms)
+    √ peliculas -> films (1 ms)
+    √ personajes -> people (3 ms)
+  no traduce palabras desconocidas
+    √ buscare -> buscare (1 ms)
+    √ camino -> camino (2 ms)
+  traduce URL del español al ingles
+    √ /planetas -> /planets (2 ms)
+    √ /peliculas -> /films (1 ms)
+    √ /personajes -> /people (1 ms)
+    √ /planetas/5 -> /planets/5 (1 ms)
+    √ /planetas/?buscar=tato -> /planets/5?search=tato (1 ms)
+    √ /planetas/?buscar=tato -> /planets/5?search=tato
+  traduce las propiedades del payload del español al ingles
+    √ {name:'Yoda', gender:'Male', mass:'34'} -> {nombre:'Yoda', genero:'Male', masa:'34'} (6 ms)
+    √ STRING{name:'Yoda', gender:'Male', mass:'34'} -> STRING{nombre:'Yoda', genero:'Male', masa:'34'} (19 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       13 passed, 13 total
+Snapshots:   0 total
+Time:        4.129 s
+Ran all test suites.
+```
 ---
 
 
