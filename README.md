@@ -302,3 +302,17 @@ Aqui estan las dependencias del proyecto (solo esta GOT y sus respectivas depend
 # Probar en local
 
 Puedes hacer `npm i` para instalar got localmente y hacer pruebas, como el demo esta desacoplado de AWS LAMBDA (no esta amarrado a esta infraestructura), puede probar haciendo `require('translate_swapi')` y pasandole 2 argumentos: El PATH del recurso y un objeto con los parametros del query.
+
+```js
+const translate_swapi = require('translate_swapi');
+
+(async ()=>{
+  try{
+    const result = await translate_swapi('personajes', {buscar: "Luck"});
+    console.log(result);
+  }catch(error){
+    console.log(error);
+  }
+}());
+
+```
