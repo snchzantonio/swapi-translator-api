@@ -177,7 +177,7 @@ El proyecto se compone de varias partes:
 
 #### `/translator`
 
-Una pequeña libreria que tiene los metodos para traducir los distintos tipos de datos  
+Una pequeña libreria que tiene los metodos para traducir los distintos tipos de datos que se usan en el demo  
 ```js
 const translator = require("./translator");
 
@@ -237,7 +237,7 @@ Retorna
 ```json
 "{\"ok\":true,\"error\":false,\"data\":{\"nombre\":\"Hoth\",\"periodo_de_rotacion\":\"23\",\"periodo_orbital\":\"549\",\"diametro\":\"7200\",\"clima\":\"frozen\",\"gravedad\":\"1.1 standard\",\"terreno\":\"tundra, ice caves, mountain ranges\",\"agua_en_la_superficie\":\"100\",\"poblacion\":\"unknown\",\"residentes\":[],\"peliculas\":[\"https://swapi.py4e.com/api/films/2/\"],\"creado\":\"2014-12-10T11:39:13.934000Z\",\"editado\":\"2014-12-20T20:58:18.423000Z\",\"url\":\"https://swapi.py4e.com/api/planets/4/\"}}"
 ```
-Fijate que `translatePayloadRE` recibe su segundo argumento como una cadena y devuelve una cadena, `translatePayloadRE` no se usa en el codigo, pero se deja como muestra de otro metodo para traducir los nombres de las propiedades (aunque este metodo no diferencia propiedades de valores y traducira todo lo que encuentre), internamente genera una expresion regular a diferencia de `translatePayload` que opera sobreobjectos y traduce recursivamente en caso de ser necesario (como cuando se hacen busquedas con `?buscar=TEXTO`).  
+Fijate que `translatePayloadRE` recibe su segundo argumento como una cadena y devuelve una cadena, `translatePayloadRE` no se usa en el codigo, pero se deja como muestra de otro metodo para traducir los nombres de las propiedades (aunque este metodo no diferencia propiedades de valores y traducira todo lo que encuentre), internamente genera una expresion regular a diferencia de `translatePayload` que opera sobre objectos y traduce recursivamente en caso de ser necesario (como cuando se hacen busquedas con `?buscar=TEXTO`).  
 
 
 ```js
@@ -278,7 +278,7 @@ Como dato de color, `./translator` se comporta como un `noOP` cuando no tiene la
 #### `swapi.js` 
 
 Un wrapper alrededor de got para hacer las consultas a la api de SWAPI.  
-Tiene un solo metodo: `get` que recibe el path del recurso que quieres buscar y devuelve o rechaza una promesa.  
+Tiene un solo metodo: `get` que recibe el path del recurso que quieres y un segundo parametro opcional que debe ser un objeto donde estas el query luego intenta obtener la data desde la API  y resuelve o rechaza una promesa.  
 ```js
 const swapi = require('./swapi');
 
@@ -333,16 +333,16 @@ Esto permite saber rapidametne si hubo un error(`ok == false`), si todo salio bi
 
 Aqui es donde realmente sucede todo, `translate_swapi.js` se apoya de `./translator` y `./swapi.js` para realizar el trabajo del demo.
 
-Este archivo reune la logica de negocio de alto nivel y cominucar al lambda (`index.js`) con los otros 2 modulos.
+Este archivo reune la logica de negocio de alto nivel y comunica al lambda handler (`index.js`) con los otros 2 modulos.
 
 Se encarga de:
-- Obtener la  PATH es español
+- Obtener la  PATH en español
 - Pasarle el PATH a `./translator` para que lo traduzca al ingles
 - Pasarle a PATH traducido a `swapi` para que busque en SWAPI
 - Pasarle la info obtenida en el punto anterior a `./translator` para que traduzca las propiedades del ingles al español
 - Devolver la info traducida
 
-`translate_swapi.js` es quien realmente hace la magia, fijate que en ningun momento se valida el endpoint, de hecho internamente no hay ningun endpoint de la API de SWAPI de definido, porque se considera al endpoint como una abstraccion y simplemente se traducen las palabras que estan en el PATH para luego pasarselo a `swapi` para que intente buscar en la API. Esto significa que internamente no se necesitan definir las rutas de los recursos de la API (`/especies`, `/personajes`, ...) con una sola ruta como `/{proxy+}` seria suficiente, pero se hace solo como una tarea academica (la demo pedia al menos 2 endpoint) y que ver los nombres de las rutas ayuda a recordar cuales son los recursos que se pueden buscar. 
+`translate_swapi.js` es quien realmente hace la magia y no `./index.js`, fijate que en ningun momento se valida el endpoint, de hecho internamente no hay ningun endpoint de la API de SWAPI definido, porque se considera al endpoint como una abstraccion y simplemente se traducen las palabras que estan en el PATH para luego pasarselo a `swapi` para que intente buscar en la API. Esto significa que internamente no se necesitan definir las rutas de los recursos de la API (`/especies`, `/personajes`, ...) con una sola ruta como `/{proxy+}` seria suficiente, pero se hace solo como una tarea academica (la demo pedia al menos 2 endpoint) y que ver los nombres de las rutas ayuda a recordar cuales son los recursos que se pueden buscar. 
 
 ### `index.js`
 
@@ -350,4 +350,4 @@ Este archivo es simplemente el entrypoint de la funcion AWS LAMBDA, sus funcione
 
 ### `nodejs.zip`
 
-Aqui estan las dependencias del proyecto (solo esta GOT y sus respectivas dependencia), se usa para crear el AWS LAYER de la funcion LAMBDA.
+Aqui estan las dependencias del proyecto (solo estan GOT y sus respectivas dependencia), se usa para crear el AWS LAYER de la funcion LAMBDA.
