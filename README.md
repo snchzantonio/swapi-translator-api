@@ -65,14 +65,13 @@ Cuando hagas el deploy puedes usar cualquiera de los endpoints para consumir la 
 
 Los endpoint son el equivalente a los endpoints de la API de SWAPI:  
 
-```mermaid
-graph LR;
-ps1["/peliculas"]  --->fe["/films"];
-ps2["/personajes"] --->pe["/people"];
-ps3["/planetas"]   --->pe2["/planets"];
-es["/especies"]    --->se1["/species"];
-ns["/naves"]       --->se2["/starship"];
-vs["/vehiculos"]   --->ve["/vehicle"];
+```
+/peliculas  --->  /films  
+/personajes --->  /people  
+/planetas   --->  /planets  
+/especies   --->  /species  
+/naves      --->  /starship  
+/vehiculos  --->  /vehicle  
 ```
 
 Se puede buscar por el index: `/especies`  
