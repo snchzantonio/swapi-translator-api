@@ -42,6 +42,7 @@ function translatePayload(lang, payload) {
     return translatedPayload;
 }
 
+//FIXME: Decidir si quitar o quedarse con esta funcion porque no se usa.
 /**
  * Intenta traducir todas las palabras en `payloadString`, si no encuentra la traduccion deja la palabra original.
  * @param {string} payloadString 
@@ -72,8 +73,8 @@ function translatePayloadRE(lang, payloadString) {
     const partTranslations = Object.keys(translations[lang]).map(s => `(${s})`).join('|');
     var re = new RegExp(partTranslations, 'g');
 
-    const translatedPayloadString = payloadString.replace(re, (coincidencia) => {
-        return translations[lang][coincidencia] || coincidencia;
+    const translatedPayloadString = payloadString.replace(re, (strMatched) => {
+        return translateWord(lang, strMatched);
     })
 
     return translatedPayloadString;
