@@ -1,0 +1,76 @@
+service: candidate
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: 20201221
+  stage: dev
+  region: us-east-1
+
+package:
+  patterns:
+    - '!__test__/**'
+
+functions:
+  translatorswapi:
+    handler: index.handler
+    description: Recibe el nombre de un recurso de la api de SWAPI y devuelve su contenido traduciendo sus propiedades al español
+    events:
+      - http: 
+          path: vehiculos
+          method: get
+          cors: true
+      - http: 
+          path: vehiculos/{idVehiculo}
+          method: get
+          cors: true
+      - http: 
+          path: peliculas
+          method: get
+          cors: true
+      - http: 
+          path: peliculas/{idPelicula}
+          method: get
+          cors: true
+      - http: 
+          path: personajes
+          method: get
+          cors: true
+      - http: 
+          path: personajes/{idPersonajs}
+          method: get
+          cors: true
+      - http: 
+          path: planetas
+          method: get
+          cors: true
+      - http: 
+          path: planetas/{idPlaneta}
+          method: get
+          cors: true
+      - http: 
+          path: especies
+          method: get
+          cors: true
+      - http: 
+          path: especies/{idEspecie}
+          method: get
+          cors: true
+      - http: 
+          path: naves
+          method: get
+          cors: true
+      - http: 
+          path: naves/{idNave}
+          method: get
+          cors: true
+      - http: 
+          path: vehiculos
+          method: get
+          cors: true
+      - http: 
+          path: vehiculos/{idVehiculo}
+          method: get
+          cors: true

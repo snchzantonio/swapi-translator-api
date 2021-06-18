@@ -1,0 +1,10 @@
+{
+    "peliculas":"films" ,
+    "personajes":"people" ,
+    "planetas":"planets" ,
+    "especies":"species" ,
+    "naves":"starships",
+    "vehiculos":"vehicles",
+    "buscar":"search",
+    "pagina":"page"
+}
