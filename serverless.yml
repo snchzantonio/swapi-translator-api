@@ -12,7 +12,13 @@ provider:
 package:
   patterns:
     - '!__test__/**'
-
+    - '!nodejs.zip'
+    - '!node_modules/**'
+    - '!dev-candidate-dev-swagger.json'
+    - '!dev-candidate-dev-swagger.yaml'
+    - '!package.json'
+    - '!package-lock.json'
+    
 functions:
   translatorswapi:
     handler: index.handler
