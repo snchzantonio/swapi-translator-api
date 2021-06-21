@@ -2,8 +2,6 @@
 
 Este es un pequeño demo que muestra como traducir los `resources` de la api de starwars `https://swapi.py4e.com/` y hacer un despliegue en AWS lambda usando serverless framework.
 
-_**POR TEMAS DE TIEMPO NO PUDE TERMINAR AL ÚLTIMA PARTE DEL DEMO QUE ERA INTEGRAR CON UNA BASE DE DATOS, YA DI EL PREAVISO EN LA EMPRESA DONDE TRABAJO Y TENGO MUCHAS COSAS QUE PONER EN ORDEN PARA IRME TRANQUILO.**_
-
 ## Despliegue en AWS LAMBDA con serverless framework
 
 _Antes de hacer el deploy puedes revisar el archivo `serverless.yml` para hacer los cambios que quieras como nombres o regiones._
@@ -50,10 +48,15 @@ endpoints:
   GET - https://8ec5rufx84.execute-api.us-east-1.amazonaws.com/dev/naves/{idNave}
   GET - https://8ec5rufx84.execute-api.us-east-1.amazonaws.com/dev/vehiculos
   GET - https://8ec5rufx84.execute-api.us-east-1.amazonaws.com/dev/vehiculos/{idVehiculo}
+  POST - https://0lyoje34kd.execute-api.us-east-1.amazonaws.com/dev/things
+  GET - https://0lyoje34kd.execute-api.us-east-1.amazonaws.com/dev/things
 functions:
   translatorswapi: candidate-dev-translatorswapi
+  dynamoCreate: candidate-dev-dynamoCreate
+  dynamoList: candidate-dev-dynamoList
 layers:
-  npm_got: arn:aws:lambda:us-east-1:714659037129:layer:npm_got:1
+  got: arn:aws:lambda:us-east-1:714659037129:layer:got:2
+  awssdk: arn:aws:lambda:us-east-1:714659037129:layer:awssdk:2
 ```
 
 ## Eliminar el proyecto de AWS LAMBDA  
@@ -115,8 +118,13 @@ La respuesta, si todo sale bien, será:
 
 Si para algún endpoint la API devuelve `{ok:true, error: false, data:{}}`, por ejemplo `naves/1`, seguramente es porque no hay data para ese recurso, puedes validar revisando `naves/` y te darás cuenta que faltan varios recursos (`naves/1`, `naves/2`, `naves/3`, ...).
 
-
 ---
+
+# Integracion con base de datos
+
+La demo tiene una pequeña integración con DynamoDB en la ruta `POST` `/things` y `GET` `/things`.  
+Desde el POST se insertan objetos en la tabla de DynamoDB (tabla `things`), el cuerpo de la ocnsulta debe ser un objecto con una propiedad `text`: `{"text": "MI TEXTO"}`  
+Luego se puede ir al GET para obtener todos los items agregados.
 
 # Probar en local
 
