@@ -126,6 +126,22 @@ La demo tiene una pequeña integración con DynamoDB en la ruta `POST` `/things`
 Desde el POST se insertan objetos en la tabla de DynamoDB (tabla `things`), el cuerpo de la ocnsulta debe ser un objecto con una propiedad `text`: `{"text": "MI TEXTO"}`  
 Luego se puede ir al GET para obtener todos los items agregados.
 
+Para agergar un nuevo item puedes usar el siguente codigo de ejemplo, solo recurda cambiarla URL por la que se genera cuando haces el deploy
+```js
+(async () => {
+  const rawResponse = await fetch('https://yvjj1rw1si.execute-api.us-east-1.amazonaws.com/dev/things', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({text: 'Textual content'})
+  });
+  const content = await rawResponse.text();
+
+  console.log(content);
+})();
+```
+
 # Probar en local
 
 Puedes hacer `npm i` para instalar got localmente y hacer pruebas, como el demo esta desacoplado de AWS LAMBDA (no esta amarrado a esta infraestructura), puede probar haciendo `require('translate_swapi')` y pasandole 2 argumentos: El PATH del recurso y un objeto con los parametros del query.
