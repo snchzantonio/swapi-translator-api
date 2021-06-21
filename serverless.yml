@@ -8,11 +8,22 @@ provider:
   lambdaHashingVersion: 20201221
   stage: dev
   region: us-east-1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+          Resource:
+            - Fn::GetAtt: [ ThingsDynamoDbTable, Arn ] 
 
 package:
   patterns:
     - '!__test__/**'
-    - '!nodejs.zip'
+    - '!layers/**'
     - '!node_modules/**'
     - '!dev-candidate-dev-swagger.json'
     - '!dev-candidate-dev-swagger.yaml'
@@ -21,10 +32,10 @@ package:
     
 functions:
   translatorswapi:
-    handler: index.handler
+    handler: translate_swapi/index.translator
     description: Recibe el nombre de un recurso de la api de SWAPI y devuelve su contenido traduciendo sus propiedades al español
     layers:
-      - { Ref: NodejsLambdaLayer }
+      - { Ref: GotLambdaLayer }
     events:
       - http: 
           path: vehiculos
@@ -82,9 +93,54 @@ functions:
           path: vehiculos/{idVehiculo}
           method: get
           cors: true
+
+  dynamoCreate:
+    handler: things/create.handler
+    layers:
+      - { Ref: AwssdkLambdaLayer }
+    events:
+      - http:
+          path: things
+          method: post
+          cors: true
+
+  dynamoList:
+    handler: things/list.handler
+    layers:
+      - { Ref: AwssdkLambdaLayer }
+    events:
+      - http:
+          path: things
+          method: get
+          cors: true
+
+resources:
+  Resources:
+    ThingsDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Delete
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: things
+
 layers:
-  nodejs:
+  got:
     package:
-      artifact: nodejs.zip
+      artifact: layers/got.zip
       patterns:
-        - 'nodejs.zip'
+        - 'layers/got.zip'
+  awssdk:
+    package:
+      artifact: layers/awssdk.zip
+      patterns:
+        - 'layers/awssdk.zip'
