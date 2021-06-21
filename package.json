@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "got": "^11.8.2"
+    "aws-sdk": "^2.932.0",
+    "got": "^11.8.2",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "jest": "^27.0.4"
