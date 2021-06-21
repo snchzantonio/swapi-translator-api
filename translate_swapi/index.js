@@ -1,6 +1,6 @@
 const translate_swapi = require("./translate_swapi");
 
-exports.handler = async (event) => {
+exports.translator = async (event) => {
 /*
  * `handler` solo es el entrypoint, quien agrupa la logica de negocio es `translate_swapi`
  * El trabgajo de handler es servir como adapter para que translate_swapi pueda recibir los parametros como los necesita
