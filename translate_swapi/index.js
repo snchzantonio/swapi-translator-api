@@ -1,13 +1,13 @@
 const translate_swapi = require("./translate_swapi");
 
 exports.translator = async (event) => {
-/*
- * `handler` solo es el entrypoint, quien agrupa la logica de negocio es `translate_swapi`
- * El trabgajo de handler es servir como adapter para que translate_swapi pueda recibir los parametros como los necesita
- * Asi separamos el entorno de la logica y translate_swapi no depende de ningun entorno en particular, esto hace mas facil hacer pruebas por separado 
- * de la logica de negocio (mockery o unitarias) o migrar a otro entorno.
- */
- 
+    /*
+     * `handler` solo es el entrypoint, quien agrupa la logica de negocio es `translate_swapi`
+     * El trabgajo de handler es servir como adapter para que translate_swapi pueda recibir los parametros como los necesita
+     * Asi separamos el entorno de la logica y translate_swapi no depende de ningun entorno en particular, esto hace mas facil hacer pruebas por separado 
+     * de la logica de negocio (mockery o unitarias) o migrar a otro entorno.
+     */
+
     let response = {
         statusCode: 200,
         body: '',
@@ -31,6 +31,10 @@ exports.translator = async (event) => {
             body: "Error interno :(",
         }
     }
+
+    response.headers = {
+        'Access-Control-Allow-Origin': '*'
+    };
 
     return response;
 };
